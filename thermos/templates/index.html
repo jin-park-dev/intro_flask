@@ -13,6 +13,17 @@ Thermos -- Welcome
         <section>
             <h2>Title: {{ title }}</h2>
             <p>Text: {{ user.initals() }}</p>
+
+            {% if new_bookmarks %}
+            <ul>
+                {% for bm in new_bookmarks %}
+                <li>{{ bm.user }} added <a href="{{ bm.url }}">{{ bm.url }}</a></li>
+                {% endfor %}
+            </ul>
+            {% else %}
+                No bookmarks yet.
+            {% endif %}
+
         </section>
         <section>
             <h2>article section h2</h2>
