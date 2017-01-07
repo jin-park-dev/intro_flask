@@ -7,7 +7,8 @@ Thermos -- Add a URL
 {% block content %}
     <section>
         <h1>Add a new URL</h1>
-        <form action="" method="post">
+{#        novalidate="novalidate", novalidate="" and novalidate  is valid syntax, too.#}
+        <form action="" method="post" novalidate="novalidate">
             {{ form.hidden_tag() }}
             <table>
                 <tr {% if form.url.errors %} class="error" {% endif %}>
