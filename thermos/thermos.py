@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, flash
 
 from logging import DEBUG
-from forms import BookmarkForm
+from thermos.forms import BookmarkForm
 
 
 app = Flask(__name__)
@@ -19,9 +19,10 @@ bookmarks = []
 app.config['SECRET_KEY'] = b"2\xcf\xcc\xd1M'\xe9_a9u\x1c\xf65\xfa\x10/Ac\xf0\xc6\xc4q\x99"
 
 
-def store_bookmark(urlfromAddRoute):
+def store_bookmark(url, description):
     bookmarks.append(dict(
-        url = urlfromAddRoute,
+        url = url,
+        description = description,
         user = "reindert",
         date = datetime.utcnow()
     ))
@@ -39,15 +40,20 @@ def index():
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     form = BookmarkForm()
-    if request.method == "POST":
-        #url = form.url.data
-        urlInAddRoute = request.form['urlInAddHtml']
-        store_bookmark(urlInAddRoute)
-        flash("Stored bookmark '{}'".format(urlInAddRoute))
-        app.logger.debug('stored url: ' + urlInAddRoute)
+    if form.validate_on_submit(): #Checks http method and validate. If GET or ERROR, skips the code
+        # checking validity of data.
+        url = form.url.data
+        description = form.description.data
+        store_bookmark(url, description)
+        # for showing message. keep it in flash and show flash else where.
+        flash("Stored bookmark '{}'".format(description))
+        # for debugging
+        app.logger.debug('stored url: ' + url)
+        app.logger.debug('stored description: ' + description)
         app.logger.debug('bookmarks: {}'.format(bookmarks))
+
         return redirect(url_for('index'))
-    return render_template('add.html')
+    return render_template('add.html', form = form)
 
 @app.errorhandler(404)
 def page_not_found(e):
