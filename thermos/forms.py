@@ -4,8 +4,8 @@ from wtforms.fields.html5 import URLField
 from wtforms.validators import DataRequired, url
 
 class BookmarkForm(Form):
-    url = URLField('url', validators=[DataRequired(), url()])
-    description = StringField('description')
+    url = URLField('The URL for your bookmark: ', validators=[DataRequired(), url()])
+    description = StringField('Add an optional description: ')
 
     # We're overriding validation method into better version.
     # This method is called with "form.validate_on_submit()"
