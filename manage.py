@@ -10,8 +10,8 @@ def initdb():
 
     #adding users
 
-    db.session.add(User(username="Genie", email="Genie@lamp.com"))
-    db.session.add(User(username="Ali", email="G@Broat.com"))
+    db.session.add(User(username="genie", email="Genie@lamp.com", password="qwerty"))
+    db.session.add(User(username="ali", email="G@Broat.com", password="qwerty"))
     db.session.commit()
 
     print('Initialized the datebase')
